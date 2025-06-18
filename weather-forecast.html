@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="SHORTCUT ICON" href="assets/favicon.ico" type="image/x-icon"/>
+
+    <title>Weather Forecast</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/e97ffb9e04.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./weather-forecast/weather-forecast.css">
+</head>
+<body>
+<div class="floating-elements">
+        <div class="floating-element">
+            <i class="fas fa-cloud" style="font-size: 3rem; color: var(--accent-color);"></i>
+        </div>
+        <div class="floating-element">
+            <i class="fas fa-sun" style="font-size: 2.5rem; color: #ffd700;"></i>
+        </div>
+        <div class="floating-element">
+            <i class="fas fa-snowflake" style="font-size: 2rem; color: #87ceeb;"></i>
+        </div>
+    </div>
+
+    <header id="navbar-placeholder">
+    </header>
+
+    <div class="container-fluid py-4">
+        <div class="container my-5 weather-container">
+            <h1>Weather Forecast</h1>
+            <h3 class="text-center mb-4">Enter the name of the city you want to check the weather for:</h3>
+            
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <form id="weather-form" class="needs-validation">
+                        <input type="text" id="city-input" class="form-control city-input" placeholder="Enter city name" required>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                        <div class="btn-container mt-3">
+                            <button type="submit" id="get-weather" class="btn btn-primary">Get Weather</button>
+                            <button type="reset" id="form-reset" class="btn btn-secondary">Reset Data</button>
+                        </div>
+                    </form>
+                    <div id="weather-result" class="mt-4"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div id="error-message" class="alert alert-danger mt-4" style="display: none;"></div>
+
+                    <div class="weather-details mt-4">
+                        <h3>Weather Details</h3>
+                        <p><i class="fa-solid fa-city"></i> City: <strong id="city-name"></strong></p>
+                        <p><i class="fa-solid fa-location-dot"></i> Country: <strong id="country"></strong></p>
+                        <p><i class="fa-solid fa-temperature-quarter"></i> Temperature: <strong id="temperature"></strong> °C</p>
+                        <p><i class="fa-solid fa-droplet"></i> Condition: <strong id="condition"></strong><img id="condition-icon" width="40px" height="40px"></img></p>
+                        <p><i class="fa-solid fa-water"></i> Humidity: <strong id="humidity"></strong>%</p>
+                        <p><i class="fa-solid fa-wind"></i> Wind Speed: <strong id="wind-speed"></strong> m/s</p>
+                        <p><i class="fa-solid fa-arrows-rotate"></i> Last Updated: <strong id="last-updated"></strong></p>
+
+                        <div class="btn-group mt-4" role="group">
+                            <button type="button" class="btn btn-info" id="show-current-weather">Current Weather</button>
+                            <button type="button" class="btn btn-info" id="show-5day-forecast">5-Day Forecast</button>
+                            <button type="button" class="btn btn-info" id="show-hourly-forecast">Hourly Forecast</button>
+                        </div>
+                    </div>
+
+                    <div id="five-day-forecast" class="mt-4" style="display: none;">
+                        <h3>5-Day Forecast</h3>
+                        <div class="row" id="forecast-cards-container">
+                        </div>
+                    </div>
+
+                    <div id="hourly-forecast" class="mt-4" style="display: none;">
+                        <h3>Hourly Forecast for <span id="hourly-forecast-date"></span></h3>
+                        <div class="list-group" id="hourly-list-container">
+                        </div>
+                    </div>
+
+                    <!-- <a id="map" style="height: 400px; width: 100%; margin-top: 20px; display: block;"></a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer-placeholder" >
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="./load-placeholders.js" type="text/javascript"></script>
+    <script src="./get-weather.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            //load navbar 
+            loadPlaceholders('navbar-placeholder', '/nav-bar.html');
+            //load footer
+            loadPlaceholders('footer-placeholder', '/footer.html');
+
+        });
+    </script>
+</body>
+</html>

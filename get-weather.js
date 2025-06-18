@@ -1,96 +1,187 @@
 const API_KEY = '5da6d3d4a6634da18a0120115251606';
+let weatherData = null; // Store weather data globally for forecast options
 
 async function getWeather(city) {
     try {
-        const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&days=5&alerts=yes&lang=en`);
-        const data = await response.json();
-        
-        if (response.ok) {
-            return data;
-        } else {
+        // Using jQuery's $.ajax for the API request
+        const data = await $.ajax({
+            url: `http://api.weatherapi.com/v1/forecast.json`,
+            method: 'GET',
+            data: {
+                key: API_KEY,
+                q: city,
+                days: 5, // Request 5 days of forecast data
+                aqi: 'no',
+                alerts: 'no'
+            }
+        });
+
+
+        if (data && data.error) {
             throw new Error(data.error.message);
         }
+        return data;
+
     } catch (error) {
-        console.error('Failed to fetch weather:', error);
-        throw error;
-    }
-}
 
-// Hide weather details initially
-document.querySelector('.weather-details').style.display = 'none';
-
-// Reset form on click
-document.getElementById('form-reset').addEventListener('click', () => {
-    const weatherDetails = document.querySelector('.weather-details');
-    weatherDetails.style.animation = 'fadeout 1s';
-    weatherDetails.addEventListener('animationend', () => {
-        weatherDetails.style.display = 'none';
-        weatherDetails.style.animation = '';
-    }, { once: true });
-});
-
-
-
-document.getElementById('weather-form').addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevent form submission
-    const city = document.getElementById('city-input').value.trim();
-    
-    if (!city) {
-        document.getElementById('city-input').classList.add('is-invalid');
-        return;
-    }
-
-    try {
-        const data = await getWeather(city);
-        
-        // Update the UI
-        document.getElementById('city-name').textContent = data.location.name;
-        document.getElementById('country').textContent = data.location.country;
-        document.getElementById('temperature').textContent = data.current.temp_c;
-        document.getElementById('condition').textContent = data.current.condition.text;
-        document.getElementById('humidity').textContent = data.current.humidity;
-        document.getElementById('wind-speed').textContent = (data.current.wind_kph / 3.6).toFixed(1);
-        document.getElementById('last-updated').textContent = data.current.last_updated;
-        // Set the condition icon as an image source
-        const iconElement = document.getElementById('condition-icon');
-        iconElement.src = data.current.condition.icon;
-        iconElement.style.display = 'inline'; // Make sure the icon is visible
-
-
-        
-        // Show weather details
-        document.querySelector('.weather-details').style.display = 'block';
-        document.getElementById('city-input').classList.remove('is-invalid');
-    } catch (error) {
-        document.getElementById('city-input').classList.add('is-invalid');
-        console.error('Error:', error.message);
-    }
-});
-
-
-// Location search functionality
-async function searchLocation() {
-    const searchInput = document.getElementById('location-search');
-    const location = searchInput.value.trim();
-    
-    if (location) {
-        try {
-            const data = await getWeather(location);
-            
-            // Update the UI
-            document.getElementById('temperature').textContent = data.current.temp_c;
-            document.getElementById('condition').textContent = data.current.condition.text;
-            document.getElementById('condition-icon').src = data.current.condition.icon;
-            // Show weather details
-            document.querySelector('.results').style.display = 'block';
-            searchInput.value = '';
-        } catch (error) {
-            console.error('Error:', error.message);
+        let errorMessage = 'Failed to fetch weather data.';
+        if (error.responseJSON && error.responseJSON.error && error.responseJSON.error.message) {
+            errorMessage = error.responseJSON.error.message;
+        } else if (error.message) {
+            errorMessage = error.message;
         }
+        console.error('Failed to fetch weather:', errorMessage);
+        throw new Error(errorMessage);
     }
 }
 
-function selectLocation(location) {
-    document.getElementById('location-search').value = location;
-    searchLocation();
+// Hide all weather sections initially
+function hideAllWeatherSections() {
+    $('.weather-details').hide();
+    $('#five-day-forecast').hide();
+    $('#hourly-forecast').hide();
 }
+
+// Display current weather
+function displayCurrentWeather(data) {
+    $('.weather-details').show(); // Show the current weather section
+
+    $('#city-name').text(data.location.name);
+    $('#country').text(data.location.country);
+    $('#temperature').text(data.current.temp_c);
+    $('#condition').text(data.current.condition.text);
+    $('#humidity').text(data.current.humidity);
+    $('#wind-speed').text((data.current.wind_kph / 3.6).toFixed(1)); // Convert to m/s
+    $('#last-updated').text(data.current.last_updated);
+
+    const $iconElement = $('#condition-icon');
+    $iconElement.attr('src', data.current.condition.icon).show(); // Set src and ensure it's visible
+}
+
+// Display 5-day forecast
+function displayFiveDayForecast(data) {
+    const $forecastContainer = $('#forecast-cards-container');
+    $forecastContainer.empty(); // Clear previous forecast cards using .empty()
+    $('#five-day-forecast').show(); // Show the 5-day forecast section
+
+    data.forecast.forecastday.forEach(day => {
+        const date = new Date(day.date);
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        const formattedDate = date.toLocaleDateString('en-US', options);
+
+        const card = `
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${formattedDate}</h5>
+                        <img src="${day.day.condition.icon}" alt="${day.day.condition.text}" class="mb-2">
+                        <p class="card-text">Max Temp: ${day.day.maxtemp_c}°C</p>
+                        <p class="card-text">Min Temp: ${day.day.mintemp_c}°C</p>
+                        <p class="card-text">Condition: ${day.day.condition.text}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        $forecastContainer.append(card); // Append the card HTML
+    });
+}
+
+// Display hourly forecast for the current day
+function displayHourlyForecast(data) {
+    const $hourlyListContainer = $('#hourly-list-container');
+    $hourlyListContainer.empty(); // Clear previous hourly items
+    $('#hourly-forecast').show(); // Show the hourly forecast section
+
+    const todayForecast = data.forecast.forecastday[0]; // Get today's forecast data
+    $('#hourly-forecast-date').text(todayForecast.date);
+
+    todayForecast.hour.forEach(hour => {
+        const time = new Date(hour.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const listItem = `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>${time}</span>
+                <img src="${hour.condition.icon}" alt="${hour.condition.text}" width="30px" height="30px">
+                <span>${hour.temp_c}°C</span>
+                <span>${hour.condition.text}</span>
+            </li>
+        `;
+        $hourlyListContainer.append(listItem); // Append the list item HTML
+    });
+}
+
+// --- Document Ready and Event Listeners ---
+$(document).ready(function() {
+    // Hide weather details initially
+    $('.weather-details').hide();
+    $('#five-day-forecast').hide();
+    $('#hourly-forecast').hide();
+
+    // Reset form on click
+    $('#form-reset').on('click', function() {
+        hideAllWeatherSections(); // Hide all sections on reset
+        const $weatherDetails = $('.weather-details');
+        // Using jQuery's fadeOut for animation, then a callback to ensure it's hidden
+        $weatherDetails.fadeOut(1000, function() {
+            $(this).hide(); // Ensure it's fully hidden after fadeOut
+            $(this).css('animation', ''); // Clear any lingering animation style
+        });
+
+        // Clear input and error message
+        $('#city-input').val(''); // Use .val() for input fields
+        $('#city-input').removeClass('is-invalid');
+        $('#error-message').hide();
+    });
+
+    // Handle form submission
+    $('#weather-form').on('submit', async function(e) {
+        e.preventDefault(); // Prevent form submission
+        const city = $('#city-input').val().trim(); // Use .val() to get input value
+
+        if (!city) {
+            $('#city-input').addClass('is-invalid');
+            $('#error-message').hide(); // Hide error if city input is empty (for immediate feedback)
+            return;
+        }
+
+        try {
+            weatherData = await getWeather(city); // Store data globally
+            hideAllWeatherSections(); // Hide all sections before displaying current
+            displayCurrentWeather(weatherData);
+            $('#city-input').removeClass('is-invalid');
+            $('#error-message').hide();
+        } catch (error) {
+            $('#city-input').addClass('is-invalid');
+            $('#error-message').text(error.message || 'Could not find weather for this city. Please try again.').show();
+            console.error('Error:', error.message);
+            hideAllWeatherSections(); // Hide weather details on error
+        }
+    });
+
+    // Event listeners for forecast buttons
+    $('#show-current-weather').on('click', function() {
+        if (weatherData) {
+            hideAllWeatherSections();
+            displayCurrentWeather(weatherData);
+        } else {
+            $('#error-message').text('Please search for a city first to view current weather.').show();
+        }
+    });
+
+    $('#show-5day-forecast').on('click', function() {
+        if (weatherData) {
+            hideAllWeatherSections();
+            displayFiveDayForecast(weatherData);
+        } else {
+            $('#error-message').text('Please search for a city first to view the 5-day forecast.').show();
+        }
+    });
+
+    $('#show-hourly-forecast').on('click', function() {
+        if (weatherData) {
+            hideAllWeatherSections();
+            displayHourlyForecast(weatherData);
+        } else {
+            $('#error-message').text('Please search for a city first to view the hourly forecast.').show();
+        }
+    });
+});
