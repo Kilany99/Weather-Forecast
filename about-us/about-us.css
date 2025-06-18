@@ -167,24 +167,7 @@
             color: white;
         }
 
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 2rem 1.5rem;
-            }
-            
-            .content-card {
-                padding: 2rem 1.5rem;
-                margin-bottom: 2rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            #map, .map-placeholder {
-                height: fit-content;
-            }
-        }
+
 
                .floating-elements {
             position: fixed;

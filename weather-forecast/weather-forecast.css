@@ -271,26 +271,7 @@
             box-shadow: 0 10px 20px rgba(255, 118, 117, 0.3);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .weather-container {
-                margin: 1rem;
-                padding: 2rem 1.5rem;
-            }
 
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .btn {
-                margin: 5px 0;
-                width: 100%;
-            }
-
-            .weather-details {
-                padding: 1.5rem;
-            }
-        }
 
         /* Loading Animation */
         .loading {
@@ -325,7 +306,7 @@
             font-weight: 700;
         }.btn-group 
         {
-            display: flex;
+            display: flex !important;
             justify-content: center;
             gap: 10px;
         }
