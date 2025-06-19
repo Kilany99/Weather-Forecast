@@ -1,0 +1,486 @@
+      :root {
+            --primary-gradient: linear-gradient(135deg, #e3e3e6 0%, #90b2e6 100%);
+            --accent-color: #6c87d6;
+            --text-dark: #2c3e50;
+            --text-light: #34495e;
+            --white-glass: rgba(255, 255, 255, 0.95);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 15px;
+            --rain-color: #a7d9f7; /* Light blue for rain */
+
+        }
+
+        body {
+            background: var(--primary-gradient);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Modern Navbar Styling */
+        .my-nav-bar {
+            background: var(--primary-gradient) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            opacity: 0.75;
+        }
+
+        .my-nav-bar:hover {
+            box-shadow: var(--hover-shadow);
+        }
+
+        .my-navbar {
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            position: relative; 
+            overflow: hidden; 
+            transition: var(--transition);
+            animation: cloudWiggle 1s infinite alternate; 
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand-icon-wrapper {
+            position: relative; /* Allows absolute positioning of children */
+            width: 50px; /* Match cloud width */
+            height: 50px; /* Match cloud height */
+            display: flex; /* Helps center children, if needed */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fav-icon { 
+            position: relative; 
+            z-index: 2; 
+            transition: transform var(--transition); 
+        }
+
+        .sun-icon {
+            position: absolute; 
+            font-size: 1.75rem;
+            color: #ffd700;
+            z-index: 1; 
+
+            transform: translate(-50%, -50%) scale(0.5); /* Start smaller and slightly offset */
+            opacity: 0; /* Fully transparent initially */
+            left: 80%; 
+             top: 40%; 
+
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* Smooth animation */
+        }
+
+        /* Hover effects for the sun and cloud */
+        .navbar-brand:hover .sun-icon {
+            transform: translate(-50%, -50%) scale(1); /* Grow to full size */
+            opacity: 1; /* Become fully visible */
+            transform: translate(-40%, -60%) scale(1); 
+        }
+
+        .navbar-brand:hover .fav-icon { /* The cloud image */
+            transform: translateX(-10px); /* Move cloud slightly to the left */
+        }
+        /* Styles for the rain animation */
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            top: 100%; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; 
+            height: 0;
+            background: transparent;
+            opacity: 0; 
+            z-index: -1;
+            
+            box-shadow: 
+                2px 0px 0 0 var(--rain-color),
+                5px 10px 0 0 var(--rain-color),
+                -3px 5px 0 0 var(--rain-color),
+                7px 15px 0 0 var(--rain-color),
+                -6px 12px 0 0 var(--rain-color),
+                10px 20px 0 0 var(--rain-color),
+                -9px 18px 0 0 var(--rain-color), 
+                -10px 22px 0 0 var(--rain-color); 
+
+        }
+
+        .navbar-brand:hover::after {
+            top: 50%; 
+            height: 30px;
+            opacity: 1; 
+            animation: rainFall 0.7s linear forwards; 
+        }
+
+        /* Keyframes for the rain falling animation */
+        @keyframes rainFall {
+            0% {
+                transform: translate(-50%, 0) scaleY(0.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(-50%, 20px) scaleY(1); /* Adjust 20px for how far drops 'fall' */
+                opacity: 1;
+            }
+        }
+
+        .navbar-brand:hover .fav-icon {
+            animation: cloudWiggle 1s infinite alternate; /* make the cloud jiggle slightly */
+        }
+
+        @keyframes cloudWiggle {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .fav-icon {
+            transition: var(--transition);
+        }
+
+        .fav-icon:hover {
+            transform: rotate(10deg);
+            /* filter: drop-shadow(0 6px 12px rgba(108, 135, 214, 0.5)); */
+        }
+
+        /* Navigation Links */
+        .navbar-nav .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.75rem 1.25rem !important;
+            margin: 0 0.25rem;
+            border-radius: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-nav .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-color), #4a69bd);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .navbar-nav .nav-link:hover::before,
+        .navbar-nav .nav-link.active::before {
+            left: 0;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(108, 135, 214, 0.3);
+        }
+
+        /* Search Functionality */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #searchIcon {
+            background: linear-gradient(135deg, var(--accent-color), #4a69bd);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(108, 135, 214, 0.3);
+        }
+
+        #searchIcon:hover {
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(108, 135, 214, 0.4);
+        }
+
+        #searchIcon i {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        #searchInputContainer {
+            background: var(--white-glass);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(108, 135, 214, 0.2);
+            border-radius: 25px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            overflow: hidden;
+            max-width: 0;
+            opacity: 0;
+        }
+
+        #searchInputContainer.show {
+            max-width: 300px;
+            opacity: 1;
+        }
+
+        #searchInputContainer input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 0.5rem 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        #searchInputContainer input::placeholder {
+            color: var(--text-light);
+        }
+
+        #searchInputContainer .btn {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        #searchInputContainer .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(116, 185, 255, 0.4);
+        }
+
+        /* User Profile */
+        .c-me {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(162, 155, 254, 0.3);
+            position: relative;
+        }
+
+        .c-me:hover {
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(162, 155, 254, 0.4);
+        }
+
+        .c-me::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: #00b894;
+            border: 2px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .msame_Header i {
+            color: white;
+            font-size: 1.1rem;
+        }
+        /* User Profile Window Styles */
+        .user-profile-window {
+            position: absolute; 
+            top: calc(100% + 10px); 
+            right: 0; /* Align to the right edge of its parent */
+            width: 280px; 
+            background-color: var(--white-glass);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden; 
+            z-index: 100; 
+            opacity: 0; 
+            visibility: hidden; 
+            transform: translateY(10px); 
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .user-profile-window.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0); /* Slide up into view */
+        }
+
+        .profile-header {
+            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 9px;
+            border-top-right-radius: 9px;
+        }
+
+        .profile-header h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .close-profile-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1; 
+            padding: 0;
+        }
+
+        .close-profile-btn:hover {
+            color: #eee;
+        }
+
+        .profile-content {
+            padding: 15px;
+            color: #333;
+        }
+
+        .profile-content p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .profile-content strong {
+            color: #555;
+        }
+
+        .profile-content hr {
+            border-color: #eee;
+            margin: 15px 0;
+        }
+
+        .profile-options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile-options li {
+            margin-bottom: 8px;
+        }
+
+        .profile-options li:last-child {
+            margin-bottom: 0;
+        }
+
+        .profile-options a {
+            text-decoration: none;
+            color: #6c5ce7;
+            font-weight: 500;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.2s ease;
+        }
+
+        .profile-options a:hover {
+            color: #a29bfe;
+            text-decoration: underline;
+        }
+        /* Mobile Toggle Button */
+        .navbar-toggler {
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .navbar-toggler:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .my-navbar {
+                padding: 1rem;
+            }
+
+            .navbar-nav {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(108, 135, 214, 0.2);
+            }
+
+            .navbar-nav .nav-link {
+                margin: 0.25rem 0;
+                text-align: center;
+            }
+
+            #searchInputContainer.show {
+                max-width: 250px;
+                margin: 1rem 0;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+        }
+
+        /* Animation for search input */
+        @keyframes slideIn {
+            from {
+                max-width: 0;
+                opacity: 0;
+            }
+            to {
+                max-width: 300px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                max-width: 300px;
+                opacity: 1;
+            }
+            to {
+                max-width: 0;
+                opacity: 0;
+            }
+        }
+
+        /* Pulse animation for active states */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 135, 214, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(108, 135, 214, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 135, 214, 0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }

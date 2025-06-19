@@ -1,44 +1,12 @@
         body {
             -webkit-text-size-adjust: 100%; 
             text-size-adjust: 100%; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
         }
-        #uhf-c-nav {
-            
-            display: none; 
-            background-color: #f8f9fa; 
-            padding: 1rem; 
-            z-index: 1000; 
-            min-width: 300px; 
-            position: absolute; 
-            right: 0; 
-            top: 100%; 
-            
-        }
-        .all-ms-nav {
-            background: none;
-            border: none;
-            padding: .5rem 1rem;
-            color: rgba(0,0,0,.55); 
-            text-decoration: none;
-            cursor: pointer;
-            display: inline-flex; 
-            align-items: center;
-            line-height: 1.5; 
-        }
-        .all-ms-nav:hover {
-            color: rgba(0,0,0,.7); 
-        }
-        .c-uhf-sronly {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0,0,0,0);
-            white-space: nowrap;
-            border: 0;
-        }
+
+      
+ 
     .carousel-caption {
         bottom: auto; 
         left: 5%; 
@@ -235,13 +203,7 @@
     {
         margin: 10px;
     }
-    .mycol
-    {
-        border: #000;
-        border-radius: 10px;
-        /* max-height: 20px; */
-    }
-    
+
     .weather-details
     {
         border: lightgrey solid 1px;
@@ -392,23 +354,12 @@
             margin-right: 10px;
         }
         
-       .my-nav-bar,.solutions,.footer-container ,#weather-dashboard,.wide-card
+       .solutions,.footer-container ,#weather-dashboard,.wide-card
        {
             background: linear-gradient(135deg, #e3e3e6 0%, #90b2e6 100%);
 
        }
-       .nav-item:hover
-       {
-        text-decoration: underline;
-        text-shadow: #000;
-         transform: translateY(-2px);
-       }
-       .fav-icon:hover
-       {
-        color: #0078d4;
-        transform: scale(1.2);
-        transition: transform 0.3s ease, color 0.3s ease;
-       }
+
 
 
 

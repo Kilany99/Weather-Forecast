@@ -11,7 +11,7 @@ async function getWeather(city) {
                 key: API_KEY,
                 q: city,
                 days: 5, // Request 5 days of forecast data
-                aqi: 'no',
+                aqi: 'yes',  // Include air quality index
                 alerts: 'no'
             }
         });
@@ -184,4 +184,95 @@ $(document).ready(function() {
             $('#error-message').text('Please search for a city first to view the hourly forecast.').show();
         }
     });
+        addLocationTagEffects();
+
 });
+
+
+// Function to search for weather based on input field
+async function searchLocation() {
+    const locationInput = document.getElementById('location-search');
+    const city = locationInput.value.trim();
+    
+    if (!city) {
+        alert('Please enter a city name');
+        return;
+    }
+    
+ 
+    
+    try {
+        const data = await getWeather(city);
+        weatherData = data; // Store globally
+        displayWeatherData(data);
+        
+        // Clear the input field after successful search
+        locationInput.value = '';
+        
+    } catch (error) {
+        showErrorState(error.message);
+    }
+}
+
+// Function to select a predefined location
+async function selectLocation(city) {
+
+    
+    // Also update the input field to show selected city
+    document.getElementById('location-search').value = city;
+    
+    try {
+        const data = await getWeather(city);
+        weatherData = data; // Store globally
+        displayWeatherData(data);
+        
+    } catch (error) {
+        showErrorState(error.message);
+    }
+}
+
+// Function to display weather data in the results div
+function displayWeatherData(data) {
+    const temperature = document.getElementById('temperature');
+    const condition = document.getElementById('condition');
+    const conditionIcon = document.getElementById('condition-icon');
+    
+    if (data && data.current) {
+        // Update temperature
+        temperature.textContent = Math.round(data.current.temp_c);
+        
+        // Update condition
+        condition.textContent = data.current.condition.text;
+        
+        // Update condition icon
+        conditionIcon.src = `https:${data.current.condition.icon}`;
+        conditionIcon.alt = data.current.condition.text;
+        conditionIcon.style.display = 'inline';
+        
+        // Show results container
+        document.querySelector('.results').style.display = 'block';
+        
+        console.log('Weather data updated successfully for:', data.location.name);
+    }
+}
+function addLocationTagEffects() {
+    const locationTags = document.querySelectorAll('.location-tag');
+    
+    locationTags.forEach(tag => {
+        tag.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+            this.style.transition = 'transform 0.2s ease';
+        });
+        
+        tag.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+        
+        tag.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+}
