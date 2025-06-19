@@ -5,7 +5,7 @@ async function getWeather(city) {
     try {
         // Using jQuery's $.ajax for the API request
         const data = await $.ajax({
-            url: `http://api.weatherapi.com/v1/forecast.json`,
+            url: `https://api.weatherapi.com/v1/forecast.json`,
             method: 'GET',
             data: {
                 key: API_KEY,
