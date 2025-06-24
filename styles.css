@@ -204,7 +204,7 @@
         margin: 10px;
     }
 
-    .weather-details
+    /* .weather-details
     {
         border: lightgrey solid 1px;
         padding: 20px;
@@ -215,13 +215,14 @@
         opacity: 0.8;
     }
 
-    @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 0.8; }
-    }
+
     @keyframes fadeout {
         0% { opacity: 0.8; }
         100% { opacity: 0; }
+    } */
+         @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 0.8; }
     }
     .weather-details:hover
     {
@@ -363,19 +364,6 @@
 
 
 
-
-
-       @keyframes pulse{
-        0% {
-            opacity: 0.6; transform: scale(1);
-        }
-        50% {
-            opacity: 1; transform: scale(1.05);
-        }
-        100% {
-            opacity: 0.6; transform: scale(1);
-        }
-       }
        .location-tag {
             cursor: pointer;
             transition: all 0.3s ease;

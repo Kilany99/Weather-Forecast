@@ -53,10 +53,10 @@
         }
 
         .navbar-brand-icon-wrapper {
-            position: relative; /* Allows absolute positioning of children */
-            width: 50px; /* Match cloud width */
-            height: 50px; /* Match cloud height */
-            display: flex; /* Helps center children, if needed */
+            position: relative; 
+            width: 50px;
+            height: 50px; 
+            display: flex; 
             justify-content: center;
             align-items: center;
         }
@@ -91,49 +91,15 @@
         .navbar-brand:hover .fav-icon { /* The cloud image */
             transform: translateX(-10px); /* Move cloud slightly to the left */
         }
-        /* Styles for the rain animation */
-        .navbar-brand::after {
-            content: '';
-            position: absolute;
-            top: 100%; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%; 
-            height: 0;
-            background: transparent;
-            opacity: 0; 
-            z-index: -1;
-            
-            box-shadow: 
-                2px 0px 0 0 var(--rain-color),
-                5px 10px 0 0 var(--rain-color),
-                -3px 5px 0 0 var(--rain-color),
-                7px 15px 0 0 var(--rain-color),
-                -6px 12px 0 0 var(--rain-color),
-                10px 20px 0 0 var(--rain-color),
-                -9px 18px 0 0 var(--rain-color), 
-                -10px 22px 0 0 var(--rain-color); 
 
-        }
 
         .navbar-brand:hover::after {
             top: 50%; 
             height: 30px;
             opacity: 1; 
-            animation: rainFall 0.7s linear forwards; 
         }
 
-        /* Keyframes for the rain falling animation */
-        @keyframes rainFall {
-            0% {
-                transform: translate(-50%, 0) scaleY(0.5);
-                opacity: 0.5;
-            }
-            100% {
-                transform: translate(-50%, 20px) scaleY(1); /* Adjust 20px for how far drops 'fall' */
-                opacity: 1;
-            }
-        }
+
 
         .navbar-brand:hover .fav-icon {
             animation: cloudWiggle 1s infinite alternate; /* make the cloud jiggle slightly */
@@ -151,7 +117,6 @@
 
         .fav-icon:hover {
             transform: rotate(10deg);
-            /* filter: drop-shadow(0 6px 12px rgba(108, 135, 214, 0.5)); */
         }
 
         /* Navigation Links */
@@ -308,7 +273,7 @@
         .user-profile-window {
             position: absolute; 
             top: calc(100% + 10px); 
-            right: 0; /* Align to the right edge of its parent */
+            right: 0; 
             width: 280px; 
             background-color: var(--white-glass);
             border-radius: 10px;
@@ -418,38 +383,9 @@
             transform: scale(1.1);
         }
 
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-        }
 
-        /* Responsive Design */
-        @media (max-width: 991px) {
-            .my-navbar {
-                padding: 1rem;
-            }
 
-            .navbar-nav {
-                margin-top: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid rgba(108, 135, 214, 0.2);
-            }
-
-            .navbar-nav .nav-link {
-                margin: 0.25rem 0;
-                text-align: center;
-            }
-
-            #searchInputContainer.show {
-                max-width: 250px;
-                margin: 1rem 0;
-            }
-
-            .search-container {
-                flex-direction: column;
-                gap: 0.5rem;
-                margin-top: 1rem;
-            }
-        }
+      
 
         /* Animation for search input */
         @keyframes slideIn {
@@ -472,15 +408,4 @@
                 max-width: 0;
                 opacity: 0;
             }
-        }
-
-        /* Pulse animation for active states */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(108, 135, 214, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(108, 135, 214, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(108, 135, 214, 0); }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
         }

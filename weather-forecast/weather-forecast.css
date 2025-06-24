@@ -63,8 +63,16 @@
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(5deg); }
         }
+          @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 0.8; }
+        }
+        @keyframes fadeout {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
 
-        /* Modern Container Styles */
+
         .weather-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -76,6 +84,7 @@
             padding: 3rem;
             margin: 2rem auto;
             max-width: 1200px;
+            opacity: 0.8;
         }
 
         .weather-container::before {
@@ -171,7 +180,6 @@
             box-shadow: 0 12px 24px rgba(162, 155, 254, 0.4);
         }
 
-        /* Weather Details Card */
         .weather-details {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
             border-radius: var(--border-radius);
@@ -181,6 +189,8 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             transition: var(--transition);
+            animation: fadeIn 2s;
+
         }
 
         .weather-details:hover {
